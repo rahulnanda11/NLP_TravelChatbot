@@ -1,0 +1,52 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-checkin_date",
+      "2": "I-checkin_date",
+      "3": "L-checkin_date",
+      "4": "U-checkin_date",
+      "5": "B-departure_date",
+      "6": "I-departure_date",
+      "7": "L-departure_date",
+      "8": "U-departure_date",
+      "9": "B-destination",
+      "10": "I-destination",
+      "11": "L-destination",
+      "12": "U-destination",
+      "13": "B-duration",
+      "14": "I-duration",
+      "15": "L-duration",
+      "16": "U-duration",
+      "17": "B-location",
+      "18": "I-location",
+      "19": "L-location",
+      "20": "U-location",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-checkin_date": 1,
+      "I-checkin_date": 2,
+      "L-checkin_date": 3,
+      "U-checkin_date": 4,
+      "B-departure_date": 5,
+      "I-departure_date": 6,
+      "L-departure_date": 7,
+      "U-departure_date": 8,
+      "B-destination": 9,
+      "I-destination": 10,
+      "L-destination": 11,
+      "U-destination": 12,
+      "B-duration": 13,
+      "I-duration": 14,
+      "L-duration": 15,
+      "U-duration": 16,
+      "B-location": 17,
+      "I-location": 18,
+      "L-location": 19,
+      "U-location": 20,
+      "O": 0
+    },
+    "num_tags": 21
+  }
+]

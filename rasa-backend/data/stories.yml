@@ -1,0 +1,65 @@
+version: "3.1"
+stories:
+
+- story: Greet and goodbye
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - intent: goodbye
+    - action: utter_goodbye
+
+- story: User is happy
+  steps:
+    - intent: mood_great
+    - action: utter_mood_great
+
+- story: User is unhappy
+  steps:
+    - intent: mood_unhappy
+    - action: utter_mood_unhappy
+
+- story: Bot challenge
+  steps:
+    - intent: bot_challenge
+    - action: utter_iamabot
+
+- story: Plan a trip
+  steps:
+    - intent: plan_trip
+    - action: plan_trip_form
+    - active_loop: plan_trip_form
+    - slot_was_set:
+        - destination: "paris"
+    - slot_was_set:
+        - departure_date: "next friday"
+    - action: plan_trip_form
+    - active_loop: null
+    - action: utter_submit_plan_trip_form
+
+- story: Search for flights
+  steps:
+    - intent: search_flight
+    - action: flight_search_form
+    - active_loop: flight_search_form
+    - slot_was_set:
+        - location: "delhi"
+    - slot_was_set:
+        - departure_date: "2025-04-10"
+    - action: flight_search_form
+    - active_loop: null
+    - action: utter_submit_flight_search_form
+
+- story: Book a hotel
+  steps:
+    - intent: book_hotel
+    - action: hotel_booking_form
+    - active_loop: hotel_booking_form
+    - slot_was_set:
+        - hotel_location: "new york"
+    - slot_was_set:
+        - checkin_date: "2025-04-15"
+    - slot_was_set:
+        - num_nights: 3
+    - action: hotel_booking_form
+    - active_loop: null
+    - action: utter_submit_hotel_booking_form

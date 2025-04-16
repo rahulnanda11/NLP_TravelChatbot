@@ -1,0 +1,112 @@
+#Use rules when you want your bot to follow fixed paths, like responding to greetings or FAQs.
+version: "3.1"
+
+rules:
+  # Basic interactions (unchanged)
+  - rule: Greet user  # Triggered when the user greets the assistant
+    steps:
+      - intent: greet  # The user expresses a greeting
+      - action: utter_greet  # The bot responds with a greeting
+
+  - rule: Say goodbye  # Triggered when the user says goodbye
+    steps:
+      - intent: goodbye  # The user says goodbye
+      - action: utter_goodbye  # The bot responds with a farewell
+
+  - rule: Handle mood great  # Triggered when the user expresses a positive mood
+    steps:
+      - intent: mood_great  # The user mentions they're feeling great
+      - action: utter_mood_great  # The bot responds positively
+
+  - rule: Handle mood unhappy  # Triggered when the user expresses a negative mood
+    steps:
+      - intent: mood_unhappy  # The user mentions being sad or unhappy
+      - action: utter_mood_unhappy  # The bot responds empathetically
+
+  - rule: Handle affirm  # Triggered when the user affirms something
+    steps:
+      - intent: affirm  # The user agrees or confirms something
+      - action: utter_affirm  # The bot acknowledges the affirmation
+
+  - rule: Handle deny  # Triggered when the user denies something
+    steps:
+      - intent: deny  # The user denies or refuses something
+      - action: utter_deny  # The bot responds with a denial
+
+  - rule: Handle bot challenge  # Triggered when the user asks if they're talking to a bot
+    steps:
+      - intent: bot_challenge  # The user asks if they're speaking to a bot
+      - action: utter_iamabot  # The bot confirms it is an AI
+
+  - rule: Ask travel restrictions  # Triggered when the user asks about travel restrictions
+    steps:
+      - intent: ask_travel_restrictions  # User inquires about travel rules
+      - action: utter_ask_travel_restrictions  # Bot responds with travel restriction information
+
+  # Form handling fixes
+  - rule: Activate trip planning form  # Triggered when the user wants to plan a trip
+    steps:
+      - intent: plan_trip  # The user expresses interest in planning a trip
+      - action: plan_trip_form  # The bot activates the trip planning form
+      - active_loop: plan_trip_form  # Marks the form as active, awaiting input
+
+  - rule: Submit trip planning form  # Triggered when the trip planning form is filled and ready to submit
+    condition:
+      - active_loop: plan_trip_form  # Ensures the form is still active
+      - slot_was_set:  # Checks that required slots have been filled
+        - destination: !null  # Checks if destination is provided
+        - departure_date: !null  # Checks if departure date is provided
+    steps:
+      - action: plan_trip_form  # Continues the trip planning form
+      - active_loop: null  # Deactivates the form
+      - action: action_confirm_trip  # Custom action for confirming the trip details
+
+  - rule: Handle incomplete trip form  # Triggered if the trip form is incomplete
+    condition:
+      - active_loop: plan_trip_form  # Ensures the form is still active
+    steps:
+      - action: plan_trip_form  # Continues the trip planning form
+      - action: utter_ask_departure_date  # Prompts for the missing departure date if not provided
+
+  # Flight search form updates
+  - rule: Activate flight search form  # Triggered when the user wants to search for a flight
+    steps:
+      - intent: search_flight  # User wants to search for flights
+      - action: flight_search_form  # The bot starts the flight search form
+      - active_loop: flight_search_form  # Marks the form as active
+
+  - rule: Submit flight search form  # Triggered when the flight search form is filled and ready to submit
+    condition:
+      - active_loop: flight_search_form  # Ensures the form is still active
+      - slot_was_set:
+        - location: !null  # Checks if a location is provided
+        - departure_date: !null  # Checks if a departure date is provided
+    steps:
+      - action: flight_search_form  # Continues the flight search form
+      - active_loop: null  # Deactivates the form
+      - action: utter_submit_flight_search_form  # Confirms the flight search form submission
+
+  # Hotel booking form updates
+  - rule: Activate hotel booking form  # Triggered when the user wants to book a hotel
+    steps:
+      - intent: book_hotel  # User wants to book a hotel
+      - action: hotel_booking_form  # The bot activates the hotel booking form
+      - active_loop: hotel_booking_form  # Marks the form as active
+
+  - rule: Submit hotel booking form  # Triggered when the hotel booking form is filled and ready to submit
+    condition:
+      - active_loop: hotel_booking_form  # Ensures the form is still active
+      - slot_was_set:
+        - hotel_location: !null  # Checks if hotel location is provided
+        - checkin_date: !null  # Checks if check-in date is provided
+        - num_nights: !null  # Checks if the number of nights is provided
+    steps:
+      - action: hotel_booking_form  # Continues the hotel booking form
+      - active_loop: null  # Deactivates the form
+      - action: utter_submit_hotel_booking_form  # Confirms the hotel booking form submission
+
+  # Enhanced fallback handling
+  - rule: Default fallback  # Triggered when the assistant is unsure about the user's intent
+    steps:
+      - intent: nlu_fallback  # When Rasa's NLU fails to recognize the user's intent
+      - action: action_default_fallback  # Use a fallback action to handle unrecognized inputs

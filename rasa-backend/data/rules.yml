@@ -1,0 +1,84 @@
+version: "3.1"
+
+rules:
+  - rule: Greet user
+    steps:
+      - intent: greet
+      - action: utter_greet
+
+  - rule: Say goodbye
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - rule: Handle mood great
+    steps:
+      - intent: mood_great
+      - action: utter_mood_great
+
+  - rule: Handle mood unhappy
+    steps:
+      - intent: mood_unhappy
+      - action: utter_mood_unhappy
+
+  - rule: Handle affirm
+    steps:
+      - intent: affirm
+      - action: utter_affirm
+
+  - rule: Handle deny
+    steps:
+      - intent: deny
+      - action: utter_deny
+
+  - rule: Handle bot challenge
+    steps:
+      - intent: bot_challenge
+      - action: utter_iamabot
+
+  - rule: Activate trip planning form
+    steps:
+      - intent: plan_trip
+      - action: plan_trip_form
+      - active_loop: plan_trip_form
+
+  - rule: Submit trip planning form
+    condition:
+      - active_loop: plan_trip_form
+    steps:
+      - action: plan_trip_form
+      - active_loop: null
+      - action: utter_submit_plan_trip_form
+
+  - rule: Activate flight search form
+    steps:
+      - intent: search_flight
+      - action: flight_search_form
+      - active_loop: flight_search_form
+
+  - rule: Submit flight search form
+    condition:
+      - active_loop: flight_search_form
+    steps:
+      - action: flight_search_form
+      - active_loop: null
+      - action: utter_submit_flight_search_form
+
+  - rule: Activate hotel booking form
+    steps:
+      - intent: book_hotel
+      - action: hotel_booking_form
+      - active_loop: hotel_booking_form
+
+  - rule: Submit hotel booking form
+    condition:
+      - active_loop: hotel_booking_form
+    steps:
+      - action: hotel_booking_form
+      - active_loop: null
+      - action: utter_submit_hotel_booking_form
+
+  - rule: Default fallback
+    steps:
+      - intent: nlu_fallback
+      - action: utter_default

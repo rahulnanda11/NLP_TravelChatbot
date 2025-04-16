@@ -1,0 +1,62 @@
+#Think of the pipeline like a set of tools that help the bot understand the user’s text.
+version: "3.1"  # Specifies the version of the Rasa configuration format being used.
+
+language: en  # Language for the assistant, in this case, English.
+
+pipeline:
+  # Tokenizes the input text based on whitespace (splits the text into words using spaces).
+  - name: WhitespaceTokenizer
+  
+  # Extracts features from the text using regular expressions for pattern matching.
+  - name: RegexFeaturizer
+  
+  # Extracts lexical and syntactic features (like part-of-speech tags) from the text.
+  - name: LexicalSyntacticFeaturizer
+  
+  # Converts the text into numeric vectors using a word-level CountVectorizer (bag-of-words).
+  - name: CountVectorsFeaturizer
+
+  # Another CountVectorizer, but this one operates at the character level to extract subword features.
+  - name: CountVectorsFeaturizer
+    analyzer: char_wb      # Analyzes character n-grams within word boundaries.
+    min_ngram: 1           # Minimum n-gram length (1 character).
+    max_ngram: 4           # Maximum n-gram length (4 characters).
+
+  # The main classifier for intent detection and entity recognition, which uses deep learning techniques.
+  - name: DIETClassifier
+    epochs: 100                   # The number of training iterations (epochs).
+    constrain_similarities: true # Prevents similar intents/entities from becoming too close in the vector space.
+
+  # Maps synonyms for entities (e.g., NYC → New York).
+  - name: EntitySynonymMapper
+
+  # Uses regular expressions (regex) to extract entities from the text.
+  - name: RegexEntityExtractor
+    use_lookup_tables: false     # Does not use lookup tables for entity extraction.
+    use_regexes: true            # Enables regex-based entity extraction.
+    use_word_boundaries: true    # Ensures entities are matched only at word boundaries.
+
+  # A fallback classifier that handles cases where predictions are made with low confidence.
+  - name: FallbackClassifier
+    threshold: 0.3               # If the model's confidence is below this threshold, fallback is triggered.
+    ambiguity_threshold: 0.1     # If multiple intents have too close scores, this triggers a fallback.
+
+policies:
+  # Rule-based policy for managing conversational flow based on predefined rules.
+  - name: RulePolicy
+    core_fallback_action_name: "action_default_fallback"  # Action to execute when fallback is triggered.
+    core_fallback_threshold: 0.2  # Confidence threshold for fallback action.
+    enable_fallback_prediction: true  # Enables prediction for fallback.
+    restrict_rules: false         # Allows flexibility in applying rules.
+
+  # Memorization policy that saves training conversations to help with short conversation flows.
+  - name: MemoizationPolicy
+
+  # A transformer-based policy that looks at past conversation history to predict actions.
+  - name: TEDPolicy
+    max_history: 5   # Considers the last 5 turns (user-bot exchanges) to predict the next action.
+    epochs: 100      # Number of training iterations for the transformer model.
+
+# Optional field to track the assistant on the Rasa platform (doesn't affect local usage).
+assistant_id: 20250414-105645-excited-schema
+5

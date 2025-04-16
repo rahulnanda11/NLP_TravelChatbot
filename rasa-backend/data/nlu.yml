@@ -1,0 +1,150 @@
+version: "3.1"
+nlu:
+
+# Greet
+- intent: greet
+  examples: |
+    - hi
+    - hello
+    - hey
+    - good morning
+    - good evening
+    - what's up
+    - howdy
+    - hey there
+
+# Goodbye
+- intent: goodbye
+  examples: |
+    - bye
+    - goodbye
+    - see you later
+    - catch you later
+    - see ya
+    - talk to you soon
+
+# Affirm
+- intent: affirm
+  examples: |
+    - yes
+    - yeah
+    - indeed
+    - of course
+    - sure
+    - definitely
+    - absolutely
+    - that's right
+
+# Deny
+- intent: deny
+  examples: |
+    - no
+    - nope
+    - never
+    - I don't think so
+    - not really
+    - no way
+
+# Mood Great
+- intent: mood_great
+  examples: |
+    - I'm doing great
+    - I'm fine
+    - feeling awesome
+    - never better
+    - everything's good
+    - I'm happy
+
+# Mood Unhappy
+- intent: mood_unhappy
+  examples: |
+    - I'm sad
+    - not feeling well
+    - I'm upset
+    - things are bad
+    - I feel down
+    - I'm unhappy
+
+# Bot Challenge
+- intent: bot_challenge
+  examples: |
+    - are you a bot?
+    - are you human?
+    - who are you?
+    - what are you?
+    - are you real?
+
+# Plan Trip
+- intent: plan_trip
+  examples: |
+    - I want to plan a trip
+    - help me plan my vacation
+    - I’m looking to organize a trip
+    - can you help with travel planning?
+    - plan a trip for me
+    - I want to go on a holiday
+    - I need help planning a holiday
+    - let’s plan my travel
+
+# Search Flight
+- intent: search_flight
+  examples: |
+    - I want to book a flight
+    - find me a flight to [Paris](destination)
+    - get me a ticket to [New York](destination)
+    - I want to fly to [London](destination)
+    - search flights from [Delhi](destination) to [Goa](destination)
+    - book a round trip from [Mumbai](destination) to [Dubai](destination)
+    - flight from [Chennai](destination) to [Bangalore](destination) on [May 10th](departure_date)
+
+# Book Hotel
+- intent: book_hotel
+  examples: |
+    - I want to book a hotel
+    - book a room in [Paris](location)
+    - find me a hotel in [London](location)
+    - I need a place to stay in [New York](location)
+    - book hotel from [April 10](checkin_date) for [3](duration) nights
+    - reserve accommodation in [Tokyo](location) from [June 1](checkin_date) for [2](duration) nights
+    - hotel booking in [Bangkok](location) starting [May 15](checkin_date)
+    - I want to stay for 4 nights
+    - Book for four nights
+    - Staying 2 nights
+    - check in on April 10 for 5 nights
+    - I want to stay for [4](duration) nights
+    - Book for [four](duration) nights
+    - I want to stay for 3 nights
+    - Book me a hotel for 2 nights
+    - I'll be staying four nights
+    - book a hotel from [2025-05-10](checkin_date) for [3](duration) nights
+    - I want to stay from [12 June 2025](checkin_date)
+
+# Regex Patterns
+- regex: date
+  examples: |
+    - \d{4}-\d{2}-\d{2}
+    - \d{2}/\d{2}/\d{4}
+    - \d{1,2} [A-Za-z]+ \d{4}          # e.g., 10 May 2025
+
+- regex: number
+  examples: |
+    - \d+
+    - one
+    - two
+    - three
+    - four
+    - five
+
+- regex: city
+  examples: |
+    - Paris
+    - London
+    - New York
+    - Tokyo
+    - Dubai
+    - Goa
+- regex: checkin_date
+  examples: |
+    - \d{4}-\d{2}-\d{2}
+    - \d{2}/\d{2}/\d{4}
+    - \d{1,2} [A-Za-z]+ \d{4}

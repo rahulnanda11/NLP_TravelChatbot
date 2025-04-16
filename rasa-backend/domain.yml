@@ -1,0 +1,185 @@
+#This is where you list what your bot can understand and how it should respond.
+version: "3.1"  # Specifies the version of the Rasa configuration format used.
+
+intents:
+  - greet  # User greets the bot.
+  - goodbye  # User says goodbye.
+  - affirm  # User affirms or confirms something.
+  - deny  # User denies something.
+  - mood_great  # User expresses a positive mood.
+  - mood_unhappy  # User expresses an unhappy mood.
+  - bot_challenge  # User challenges the bot (e.g., "Are you a bot?").
+  - plan_trip  # User wants to plan a trip.
+  - search_flight  # User wants to search for flights.
+  - book_hotel  # User wants to book a hotel.
+  - ask_travel_restrictions  # User asks about travel restrictions.
+
+entities:
+  - location  # Entity for location (e.g., city, country).
+  - destination  # Entity for travel destination.
+  - number  # Entity for numbers (e.g., number of people, flight number).
+  - date  # Entity for date (e.g., travel date, booking date).
+  - checkin_date  # Entity for hotel check-in date.
+  - duration  # Entity for duration of stay (e.g., number of nights).
+
+slots:
+  # Slots hold the values for the entities recognized in the conversation.
+  location:
+    type: text  # The slot type is text (string).
+    influence_conversation: true  # The slot will influence the conversation flow.
+    mappings:
+      - type: from_entity  # The value is taken directly from the 'location' entity.
+        entity: location
+
+  destination:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: destination
+
+  departure_date:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: date
+
+  hotel_location:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: location
+
+  checkin_date:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: checkin_date
+
+  num_nights:
+    type: float  # The slot type is a floating point number (for duration in nights).
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: duration
+
+  travel_date:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: date
+
+  return_date:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: date
+
+  num_people:
+    type: float  # The number of people for the flight or hotel booking.
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: number
+
+  duration:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: duration
+
+forms:
+  # Forms help collect required information for specific actions.
+  plan_trip_form:
+    required_slots:
+      - destination  # Collect the destination.
+      - departure_date  # Collect the departure date.
+
+  flight_search_form:
+    required_slots:
+      - location  # Collect the departure location.
+      - departure_date  # Collect the departure date.
+
+  hotel_booking_form:
+    required_slots:
+      - hotel_location  # Collect the hotel location.
+      - checkin_date  # Collect the check-in date.
+      - num_nights  # Collect the number of nights.
+
+responses:
+  # Responses that the bot will give to the user.
+  utter_greet:
+    - text: "👋 Hey there! Ready to plan your next adventure?"
+
+  utter_goodbye:
+    - text: "👋 Bye! Safe travels and hope to chat with you again soon."
+
+  utter_affirm:
+    - text: "👍 Awesome! Let's keep going."
+
+  utter_deny:
+    - text: "No worries. Just let me know if you change your mind."
+
+  utter_mood_great:
+    - text: "😄 Love the energy! Where are we heading?"
+
+  utter_mood_unhappy:
+    - text: "😟 Sorry to hear that. Maybe a getaway will cheer you up?"
+
+  utter_iamabot:
+    - text: "🤖 I'm your travel assistant bot, here to help with trips, flights, and hotels!"
+
+  utter_ask_destination:
+    - text: "🌍 Where would you like to travel?"
+
+  utter_ask_departure_date:
+    - text: "🗓️ When do you want to depart?"
+
+  utter_ask_location:
+    - text: "✈️ Which city are you flying from?"
+
+  utter_ask_hotel_location:
+    - text: "🏨 Which city do you want to stay in?"
+
+  utter_ask_checkin_date:
+    - text: "🛎️ What's your check-in date?"
+
+  utter_ask_num_nights:
+    - text: "⏳ How many nights are you planning to stay?"
+
+  utter_submit_plan_trip_form:
+    - text: "📌 Trip planned to **{destination}** on **{departure_date}**. All set! ✅"
+      condition:
+        - type: active_loop
+          name: plan_trip_form
+        - type: slot
+          name: destination
+        - type: slot
+          name: departure_date
+
+  utter_submit_flight_search_form:
+    - text: "🔎 Looking for flights from **{location}** on **{departure_date}**... 🛫"
+
+  utter_submit_hotel_booking_form:
+    - text: "🏨 Hotel booked in **{hotel_location}** from **{checkin_date}** for **{num_nights} nights**. ✔️"
+
+  utter_default:
+    - text: "🤔 I'm not sure I understood that. Can you rephrase it?"
+
+  utter_ask_travel_restrictions:
+    - text: "📢 For the latest travel restrictions, check official government advisories or embassy websites."
+
+actions:
+  # Custom actions to handle tasks like confirming the trip or handling fallback.
+  - action_confirm_trip
+  - action_default_fallback
+
+session_config:
+  session_expiration_time: 60  # The session will expire after 60 minutes of inactivity.
+  carry_over_slots_to_new_session: true  # If a session expires, the slot values are carried over to the new session.

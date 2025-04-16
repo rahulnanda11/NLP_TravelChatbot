@@ -1,0 +1,89 @@
+#It’s like a script that teaches the bot how to handle real conversations step by step.
+version: "3.1"  # YAML version for RasaA
+
+stories:
+
+# Simple conversation flow: greet then goodbye
+- story: Greet and goodbye
+  steps:
+    - intent: greet  # User says hello
+    - action: utter_greet  # Bot replies with a greeting
+    - intent: goodbye  # User says goodbye
+    - action: utter_goodbye  # Bot replies with goodbye
+
+# When user is happy
+- story: User is happy
+  steps:
+    - intent: mood_great  # User expresses that they're happy
+    - action: utter_mood_great  # Bot responds positively
+
+# When user is unhappy
+- story: User is unhappy
+  steps:
+    - intent: mood_unhappy  # User expresses they're unhappy
+    - action: utter_mood_unhappy  # Bot responds empathetically
+
+# When user challenges the bot
+- story: Bot challenge
+  steps:
+    - intent: bot_challenge  # User questions if the bot is human
+    - action: utter_iamabot  # Bot confirms it is a bot
+
+# Story for trip planning with form and slot filling
+- story: Plan a trip with form
+  steps:
+    - intent: plan_trip  # User wants to plan a trip
+    - action: plan_trip_form  # Activate the trip planning form
+    - active_loop: plan_trip_form  # Start the loop for slot filling
+    - slot_was_set:
+        - destination: "paris"  # The user specifies Paris as the destination
+        - departure_date: "2025-05-10"  # The user specifies the departure date
+    - action: plan_trip_form  # Continue the form interaction
+    - active_loop: null  # End the form
+    - action: utter_submit_plan_trip_form  # Confirm the trip planning
+
+# Flight booking story
+- story: Flight search from city with date
+  steps:
+    - intent: search_flight  # User wants to search for flights
+    - action: flight_search_form  # Activate the flight search form
+    - active_loop: flight_search_form  # Start slot filling for flight search
+    - slot_was_set:
+        - location: "delhi"  # Departure location is set to Delhi
+        - departure_date: "2025-05-11"  # Departure date is set
+    - action: flight_search_form  # Continue the form interaction
+    - active_loop: null  # End the form
+    - action: utter_submit_flight_search_form  # Confirm the flight search
+
+# Hotel booking story
+- story: Hotel booking with all details
+  steps:
+    - intent: book_hotel  # User wants to book a hotel
+    - action: hotel_booking_form  # Activate the hotel booking form
+    - active_loop: hotel_booking_form  # Start slot filling for hotel booking
+    - slot_was_set:
+        - hotel_location: "tokyo"  # The user specifies Tokyo as the hotel location
+        - checkin_date: "2025-06-01"  # The user specifies the check-in date
+        - num_nights: 3  # The user specifies 3 nights of stay
+    - action: hotel_booking_form  # Continue the hotel booking form
+    - active_loop: null  # End the form
+    - action: utter_submit_hotel_booking_form  # Confirm the hotel booking
+
+# Travel restriction info story
+- story: Ask about travel restrictions
+  steps:
+    - intent: ask_travel_restrictions  # User asks about travel restrictions
+    - action: utter_ask_travel_restrictions  # Bot responds with travel restriction info
+
+# Alternate flow: confirms trip after form
+- story: Confirm trip planning after form
+  steps:
+    - intent: plan_trip  # User wants to plan a trip
+    - action: plan_trip_form  # Activate the trip planning form
+    - active_loop: plan_trip_form  # Start slot filling for trip planning
+    - slot_was_set:
+        - destination: "london"  # The user specifies London as the destination
+        - departure_date: "2025-07-15"  # The user specifies the departure date
+    - action: plan_trip_form  # Continue the form interaction
+    - active_loop: null  # End the form
+    - action: action_confirm_trip  # Custom action to confirm the trip

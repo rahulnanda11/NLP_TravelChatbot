@@ -1,0 +1,163 @@
+#It's like teaching the bot how people may ask the same thing in different ways.
+version: "3.1"  # Specifies the version of Rasa NLU configuration being used
+
+nlu:  # This section defines training examples for each intent
+
+# User greetings
+- intent: greet  # This intent is triggered when the user greets the bot
+  examples: |  # Provides examples of what the user might say
+    - hi  # Basic greeting
+    - hello  # Another common greeting
+    - hey  # Informal greeting
+    - good morning  # Greeting specific to the morning time
+    - good evening  # Greeting specific to the evening time
+    - what's up  # Informal greeting
+    - howdy  # Informal greeting, more common in certain regions
+    - hey there  # Casual greeting
+
+# User says goodbye
+- intent: goodbye  # Triggered when the user says goodbye
+  examples: |  # Examples of how the user might bid farewell
+    - bye  # A casual farewell
+    - goodbye  # Standard farewell
+    - see you later  # A more informal way to say goodbye
+    - catch you later  # Casual way to say goodbye
+    - see ya  # Informal and friendly way to say goodbye
+    - talk to you soon  # Another friendly farewell
+
+# User gives a positive/affirmative response
+- intent: affirm  # Triggered when the user affirms something
+  examples: |  # Examples of affirmations
+    - yes  # Simple affirmation
+    - yeah  # Informal affirmative
+    - indeed  # Formal affirmation
+    - of course  # Strong affirmative
+    - sure  # Casual affirmation
+    - definitely  # Strong agreement
+    - absolutely  # Very strong agreement
+    - that's right  # Affirming correctness
+    - correct  # Confirmation that something is true
+
+# User denies or says no
+- intent: deny  # Triggered when the user denies or refuses something
+  examples: |  # Examples of denials
+    - no  # Simple refusal
+    - nope  # Informal denial
+    - never  # Strong refusal
+    - I don't think so  # Polite refusal
+    - not really  # Soft denial
+    - no way  # Strong informal denial
+
+# User expresses they are feeling good
+- intent: mood_great  # Triggered when the user mentions a good mood
+  examples: |  # Examples of the user feeling positive
+    - I'm doing great  # Expressing positive feelings
+    - I'm fine  # Neutral positive response
+    - feeling awesome  # Strong positive emotion
+    - never better  # Strong expression of feeling great
+    - everything's good  # Positive mood check
+    - I'm happy  # Straightforward expression of happiness
+    - all good  # Casual positive response
+
+# User expresses they are feeling sad/unhappy
+- intent: mood_unhappy  # Triggered when the user expresses sadness or negativity
+  examples: |  # Examples of the user feeling negative
+    - I'm sad  # Simple expression of sadness
+    - not feeling well  # Can indicate physical or emotional state
+    - I'm upset  # Expresses being emotionally disturbed
+    - things are bad  # Negative feeling about current circumstances
+    - I feel down  # Expression of low mood
+    - I'm unhappy  # Direct expression of unhappiness
+    - terrible day  # Negative description of the day
+
+# User is checking whether they are talking to a bot
+- intent: bot_challenge  # Triggered when the user questions if they're talking to a bot
+  examples: |  # Examples of bot-related questions
+    - are you a bot?  # Direct inquiry about being a bot
+    - are you human?  # Asking if the bot is a human
+    - who are you?  # Inquiry about the bot's identity
+    - what are you?  # Question about the bot's nature
+    - are you real?  # Questioning if the bot is truly "real"
+    - are you an AI?  # Asking if the bot is artificial intelligence
+
+# User wants to plan a trip
+- intent: plan_trip  # Triggered when the user expresses intent to plan a trip
+  examples: |  # Examples of how the user might want to plan a trip
+    - I want to plan a trip  # General request for trip planning
+    - help me plan my vacation  # Request for help planning a vacation
+    - can you help with travel planning?  # Asking for travel planning assistance
+    - plan a trip for me  # Direct request to plan a trip
+    - I want to go on a holiday  # Expressing a desire for a holiday
+    - let's plan my travel  # Informal request to begin trip planning
+    - organize a holiday to [Paris](destination)  # User provides a specific destination
+    - plan a trip to [Japan](destination) on [May 20](departure_date)  # Detailed request with destination and date
+    - [paris](destination)  # A shorter version, just a destination entity
+    - [new york](destination)  # Another destination entity
+
+# User wants to search or book a flight
+- intent: search_flight  # Triggered when the user wants to search or book a flight
+  examples: |  # Examples of flight-related queries
+    - I want to book a flight  # General flight booking request
+    - find me a flight to [Paris](destination)  # Specific flight search request
+    - get me a ticket to [New York](destination)  # Another specific flight request
+    - I want to fly to [London](destination)  # Requesting to fly to London
+    - search flights from [Delhi](location) to [Goa](destination)  # Specific route flight search
+    - flight from [Mumbai](location) to [Dubai](destination) on [2025-05-10](departure_date)  # Flight search with departure date
+    - show me flights to [Bangkok](destination)  # General flight search request
+    - one-way ticket to [Rome](destination) on [May 15](departure_date)  # Request for one-way flight with date
+    - [tokyo](destination)  # A short version of the destination entity
+    - [dubai](destination)  # Another example of destination entity
+
+# User wants to book a hotel
+- intent: book_hotel  # Triggered when the user expresses interest in booking a hotel
+  examples: |  # Examples of hotel booking queries
+    - I want to book a hotel  # General hotel booking request
+    - book a room in [Paris](location)  # Specific hotel location request
+    - find me a hotel in [London](location)  # Another location-based hotel search
+    - I need a place to stay in [New York](location)  # Requesting a place to stay
+    - book hotel from [2025-05-10](checkin_date) for [3](duration) nights  # Specific date and duration for hotel booking
+    - reserve accommodation in [Tokyo](location) from [June 1](checkin_date) for [2](duration) nights  # Another specific booking
+    - hotel booking in [Bangkok](location) starting [May 15](checkin_date)  # Hotel booking with check-in date
+    - Book for four nights  # General booking request without specific number of nights
+    - check in on [April 10](checkin_date) for [5](duration) nights  # Specific check-in date and duration
+    - I want to stay for [4](duration) nights  # General duration-based request
+    - [2](duration) nights  # Short version with duration only
+    - stay [3](duration) nights in [Dubai](location)  # Duration and location-based request
+    - I want to stay in [Rome](location)  # Simple request with location entity
+
+# User is asking about travel-related restrictions or policies
+- intent: ask_travel_restrictions  # Triggered when the user asks about travel restrictions
+  examples: |  # Examples of travel-related inquiries
+    - Do I need a visa for [Paris](destination)?  # Asking about visa requirements
+    - Any COVID rules for traveling to [London](destination)?  # Asking about COVID-related restrictions
+    - Are there any travel restrictions for [Dubai](destination)?  # Asking about general travel restrictions
+    - Can I travel to [Japan](destination) without a visa?  # Asking about visa-free travel
+    - What are the current guidelines for entering [Italy](destination)?  # Asking about entry guidelines
+    - Is quarantine required in [Thailand](destination)?  # Asking about quarantine requirements
+    - Do I need a vaccine certificate for [France](destination)?  # Asking about vaccine requirements
+    - Any entry rules for [USA](destination)?  # Asking about entry rules for the USA
+    - What are the travel policies for [Canada](destination)?  # Asking about travel policies
+
+# Regular expressions for identifying date patterns
+- regex: date  # Custom regex pattern for recognizing date entities
+  examples: |  # Examples of date formats
+    - \d{4}-\d{2}-\d{2}  # e.g., 2025-05-10
+    - \d{2}/\d{2}/\d{4}  # e.g., 10/05/2025
+    - \d{1,2} [A-Za-z]+ \d{4}  # e.g., 10 May 2025
+
+# Regular expressions for identifying number patterns (e.g., duration or people count)
+- regex: number  # Custom regex pattern for recognizing numbers
+  examples: |  # Examples of numeric inputs
+    - \d+  # Any number like 2, 5
+    - one  # Words representing numbers
+    - two
+    - three
+    - four
+    - five
+
+# Regular expressions for check-in date formats
+- regex: checkin_date  # Custom regex pattern for check-in dates
+  examples: |  # Examples of check-in date formats
+    - \d{4}-\d{2}-\d{2}  # e.g., 2025-05-10
+    - \d{2}/\d{2}/\d{4}  # e.g., 10/05/2025
+    - \d{1,2} [A-Za-z]+ \d{4}  # e.g., 10 May 2025
